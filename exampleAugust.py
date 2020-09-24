@@ -10,7 +10,7 @@ from ev3dev2.sound import Sound
 
 def setup():
     global tank_drive, colorSensorLeft, colorSensorRight, ultra, sound, touchSensor, gyroSensor
-
+     #g
     tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
     #tank_drive.gyro = GyroSensor('in4')
     #sleep(1)
