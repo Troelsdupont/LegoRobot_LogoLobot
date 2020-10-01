@@ -10,11 +10,9 @@ from ev3dev2.sound import Sound
 
 def setup():
     global tank_drive, colorSensorLeft, colorSensorRight, ultra, sound, touchSensor, gyroSensor
-     #g
+
     tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
-    #tank_drive.gyro = GyroSensor('in4')
-    #sleep(1)
-    #tank_drive.gyro.calibrate()
+    tank_drive.gyro = GyroSensor('in4')
 
     colorSensorLeft = ColorSensor('in1')
     colorSensorRight = ColorSensor('in2')
@@ -34,17 +32,28 @@ def testGyro():
     while not touchSensor.is_pressed:
         print(tank_drive.gyro.angle)
 
+def turnDegree(direction, speed):
+    gyroSensor.calibrate()
+    if direction == 'left':
+        tank_drive.turn_degrees(SpeedPercent(speed), 90)
+    elif direction == 'right':
+        tank_drive.turn_degrees(SpeedPercent(speed), -90)
+    tank_drive.stop()
+    
 def turn(direction, speed):
-    start_angle = gyroSensor.angle
+    gyroSensor.calibrate()
+    #sound.speak("turning " + direction)
 
-    while 90 > start_angle - (start_angle - abs(gyroSensor.angle)):
+    while 90 > abs(gyroSensor.angle):
+        #print(abs(gyroSensor.angle))
         if direction == 'left':
-            print(start_angle - (start_angle - abs(gyroSensor.angle)))
             tank_drive.on(SpeedPercent(speed), SpeedPercent(-speed))
         elif direction == 'right':
-            print(start_angle - (start_angle - abs(gyroSensor.angle)))
             tank_drive.on(SpeedPercent(-speed), SpeedPercent(speed))
     tank_drive.stop()
+
+    gyroSensor.calibrate()
+
 
 #def turn22(direction):
     #print(direction)
@@ -84,10 +93,9 @@ if __name__ == "__main__":
     #while colorSensorLeft.color == 6:
     #    tank_drive.on(SpeedPercent(99), SpeedPercent(99))
 
-    sound.speak("turning left")
-    turn('left', 15)
-    sound.speak("turning right")
-    turn('right', 15)
+    turnDegree('right', 15)
+
+    turnDegree('left', 15)
 
     #testGyro()
     #turn('left')
