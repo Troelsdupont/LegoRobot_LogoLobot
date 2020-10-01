@@ -50,7 +50,7 @@ def straight():
     if (colorRightSensor.color!=6 and colorLeftSensor.color!=6):
         tank_drive.on_for_rotations(8, 8, 0.1)
 
-def straightpush():
+def place():
     if (colorLeftSensor.color==6 and colorRightSensor.color==6):
         tank_drive.on(SpeedPercent(10),SpeedPercent(10))
         #sound.speak(colorLeft)
