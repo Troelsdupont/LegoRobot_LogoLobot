@@ -36,16 +36,21 @@ def testGyro():
         print(tank_drive.gyro.angle)
 
 def turn(direction, speed):
-    start_angle = gyroSensor.angle
-    sound.speak("Turn")
-    while 90 > start_angle - (start_angle - abs(gyroSensor.angle)):
+    gyroSensor.calibrate()
+    sound.speak("turn " + direction)
+    #gyroSensor.angle = 0
+
+    while 90 > abs(gyroSensor.angle):
+        print(abs(gyroSensor.angle))
+
         if direction == 'left':
-            #print(start_angle - (start_angle - abs(gyroSensor.angle)))
             tank_drive.on(SpeedPercent(speed), SpeedPercent(-speed))
         elif direction == 'right':
-            #print(start_angle - (start_angle - abs(gyroSensor.angle)))
             tank_drive.on(SpeedPercent(-speed), SpeedPercent(speed))
     tank_drive.stop()
+
+    gyroSensor.calibrate()
+
 
 def straight():
     sound.speak("straight")
@@ -104,9 +109,9 @@ def commandToState1(commands, pointer):
     if commands[pointer]=="P":
         place()
     if commands[pointer]=="R":
-        turn('right',15)
+        turn('right',10)
     if commands[pointer]=="L":
-        turn('left',15)
+        turn('left',10)
 
 
 def FSM(state):
