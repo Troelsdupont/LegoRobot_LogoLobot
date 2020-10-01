@@ -29,7 +29,7 @@ def setup():
     sound = Sound()
 
 def testGyro():
-    while not touchSensor.is_pressed:
+    #while not touchSensor.is_pressed:
         print(tank_drive.gyro.angle)
 
 def turnDegree(direction, speed):
@@ -39,20 +39,21 @@ def turnDegree(direction, speed):
     elif direction == 'right':
         tank_drive.turn_degrees(SpeedPercent(speed), -90)
     tank_drive.stop()
-    
-def turn(direction, speed):
-    gyroSensor.calibrate()
-    #sound.speak("turning " + direction)
 
-    while 90 > abs(gyroSensor.angle):
-        #print(abs(gyroSensor.angle))
+def turn(direction):
+    gyroSensor.reset()
+    sound.speak("turning " + direction)
+    speed = 30
+    #while not touchSensor.is_pressed:
+    while 80 > abs(gyroSensor.angle):
+        print(abs(gyroSensor.angle))
         if direction == 'left':
             tank_drive.on(SpeedPercent(speed), SpeedPercent(-speed))
         elif direction == 'right':
             tank_drive.on(SpeedPercent(-speed), SpeedPercent(speed))
     tank_drive.stop()
 
-    gyroSensor.calibrate()
+    #gyroSensor.reset()
 
 
 #def turn22(direction):
@@ -93,9 +94,9 @@ if __name__ == "__main__":
     #while colorSensorLeft.color == 6:
     #    tank_drive.on(SpeedPercent(99), SpeedPercent(99))
 
-    turnDegree('right', 15)
-
-    turnDegree('left', 15)
+    while not touchSensor.is_pressed:
+        turn('right')
+        turn('left')
 
     #testGyro()
     #turn('left')

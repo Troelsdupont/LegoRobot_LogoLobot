@@ -29,7 +29,6 @@ def setup():
     gyroSensor = GyroSensor('in4')
     gyroSensor.calibrate()
 
-
 def turn(direction):
     gyroSensor.reset()
     #sound.speak("turning " + direction)
@@ -44,9 +43,8 @@ def turn(direction):
             tank_drive.on(SpeedPercent(-speed), SpeedPercent(speed))
     tank_drive.stop()
 
-
 def straight():
-    sound.speak("straight")
+    #sound.speak("straight")
     while not (colorSensorRight.color!=6 and colorSensorLeft.color!=6):
         if (colorSensorLeft.color==6 and colorSensorRight.color==6):
             tank_drive.on(SpeedPercent(10),SpeedPercent(10))
@@ -102,23 +100,21 @@ def commandToState1(commands, pointer):
     if commands[pointer]=="P":
         place()
     if commands[pointer]=="R":
-        turn('right')
+        turn("right")
     if commands[pointer]=="L":
-        turn('left')
-
+        turn("left")
 
 def FSM(state):
     switcher = {
     #0: setup(),
     1: straight(),
     2: place(),
-    3: turn('right'),
-    4: turn('left')
+    3: turn('right',15),
+    4: turn('left',15)
     }
 
 if __name__ == "__main__":
     # TODO: Add code here
-
 
     #Setup = 0
     #Straght = "S" = 1
@@ -135,8 +131,8 @@ if __name__ == "__main__":
     while True:
 
         commandToState1(commands, commandPointer)
-        sound.speak("New state")
-        sound.speak(commandPointer)
+        #sound.speak("New state")
+        #sound.speak(commandPointer)
 
         commandPointer += 1
 
